@@ -64,5 +64,14 @@ INSERT INTO Products (name, description,price,quantity, available,size, category
 VALUES ("Iphone 14", "Nice and sleek Phone" ,"999.99",27, 1,"medium", 2);
 
 
+INSERT INTO Orders (user_id) 
+VALUES(1);
 
-select * from products
+INSERT INTO Order_items (product_id, order_id, quantity, unit_price)
+VALUES (6,2,3,129.99);
+
+
+select * from products;
+select * from Order_items;
+
+select * from Order_items where order_id=2; 
