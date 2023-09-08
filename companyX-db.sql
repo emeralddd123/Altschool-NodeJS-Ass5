@@ -2,53 +2,67 @@ use companyx;
 
 
 CREATE TABLE IF NOT EXISTS  `Users` (
-    `id` INT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `id` BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `username` VARCHAR(255) NOT NULL,
     `email` VARCHAR(255) NOT NULL,
     `password` VARCHAR(255) NOT NULL,
     `contact` VARCHAR(255) NOT NULL,
-    `gender` VARCHAR(255) NOT NULL,
+    `gender` ENUM('Male', 'Female') NOT NULL,
     `phoneNumber` VARCHAR(255) NOT NULL,
     `is_staff` TINYINT(1) NOT NULL DEFAULT 0,
     `is_admin` TINYINT(1) NOT NULL DEFAULT 0,
-    `created_at` DATETIME NOT NULL
+    `created_at` datetime DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS `Categorys` (
-    `id` INT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `id` BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `name` VARCHAR(255) NOT NULL,
     `description` VARCHAR(255) NOT NULL,
-    `created_at` DATETIME NOT NULL
+    `created_at` datetime DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS `Products` (
-    `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `name` VARCHAR(255) NOT NULL,
     `description` VARCHAR(255) NOT NULL,
     `price` DECIMAL(8, 2) NOT NULL,
     `quantity` INT NOT NULL,
     `available` TINYINT(1) NOT NULL DEFAULT 0,
     `size` ENUM('small', 'medium', 'large') NOT NULL,
-    `created_at` DATETIME NOT NULL,
-    `category_id` INT,
+    `created_at`  datetime DEFAULT CURRENT_TIMESTAMP,
+    `category_id` BIGINT,
     FOREIGN KEY (category_id) REFERENCES Categorys(id)
 );
 
 CREATE TABLE IF NOT EXISTS `Orders` (
-    `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `user_id` INT NOT NULL,
+    `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `user_id` BIGINT NOT NULL,
     `approval` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'False or True. Can only be modified by admins',
-    `created_at` DATETIME NOT NULL,
+    `created_at`  datetime DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES Users(id)
 );
 
 CREATE TABLE IF NOT EXISTS `Order_items` (
-    `id` INT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `product_id` INT NOT NULL,
-    `order_id` INT NOT NULL,
+    `id` BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `product_id` BIGINT NOT NULL,
+    `order_id` BIGINT NOT NULL,
     `quantity` INT NOT NULL,
     `unit_price` DECIMAL(8, 2) NOT NULL,
     FOREIGN KEY (product_id) REFERENCES Products(id),
     FOREIGN KEY (order_id) REFERENCES Orders(id)
 );
 
+
+
+INSERT INTO Users (username, email,password,contact, gender,phoneNumber) 
+VALUES ("DanielAdesoji", "Adesoji@fakegmail.com" ,"password123","Somewhere in the world", "Male", "0808954XXXX");
+
+INSERT INTO Categorys (name, description) 
+VALUES ("Phones", "Includes samsungss, Apple Ihones and all");
+
+INSERT INTO Products (name, description,price,quantity, available,size, category_id) 
+VALUES ("Iphone 14", "Nice and sleek Phone" ,"999.99",27, 1,"medium", 2);
+
+
+
+select * from products
